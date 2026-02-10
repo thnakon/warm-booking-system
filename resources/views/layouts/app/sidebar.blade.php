@@ -20,6 +20,24 @@
                     {{ __('Dashboard') }}
                 </flux:sidebar.item>
             </flux:sidebar.group>
+
+            <flux:sidebar.group :heading="__('Management')" class="grid">
+                <flux:sidebar.item icon="squares-2x2" :href="route('admin.dashboard')"
+                    :current="request()->routeIs('admin.dashboard')" wire:navigate>
+                    {{ __('Admin Dashboard') }}
+                </flux:sidebar.item>
+                <flux:sidebar.item icon="calendar-days" :href="route('admin.bookings.index')"
+                    :current="request()->routeIs('admin.bookings.*')" wire:navigate>
+                    {{ __('Bookings') }}
+                </flux:sidebar.item>
+                <flux:sidebar.item icon="view-columns" :href="route('admin.tape-chart')"
+                    :current="request()->routeIs('admin.tape-chart')" wire:navigate>
+                    {{ __('Tape Chart') }}
+                </flux:sidebar.item>
+                <flux:sidebar.item icon="building-office-2" :href="route('home')" wire:navigate>
+                    {{ __('Public Booking') }}
+                </flux:sidebar.item>
+            </flux:sidebar.group>
         </flux:sidebar.nav>
 
         <flux:spacer />
