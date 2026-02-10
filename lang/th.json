@@ -1,0 +1,23 @@
+{
+    "Dashboard": "แผนควบคุม",
+    "Admin Dashboard": "แผงควบคุมแอดมิน",
+    "Bookings": "การจอง",
+    "Tape Chart": "ตารางสถานะห้องพัก",
+    "Public Booking": "หน้าจองสำหรับลูกค้า",
+    "Platform": "แพลตฟอร์ม",
+    "Management": "การจัดการ",
+    "Repository": "คลังรหัส",
+    "Documentation": "เอกสารประกอบ",
+    "Log Out": "ออกจากระบบ",
+    "Profile": "ข้อมูลส่วนตัว",
+    "Settings": "ตั้งค่า",
+    "Appearance Settings": "ตั้งค่าการแสดงผล",
+    "Appearance": "การแสดงผล",
+    "Update the appearance settings for your account": "อัปเดตการแสดงผลสำหรับบัญชีของคุณ",
+    "Light": "โหมดสว่าง",
+    "Dark": "โหมดมืด",
+    "System": "ตามระบบ",
+    "Language": "ภาษา",
+    "Thai": "ไทย",
+    "English": "อังกฤษ"
+}

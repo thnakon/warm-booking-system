@@ -3,7 +3,19 @@
 use Livewire\Component;
 
 new class extends Component {
-    //
+    public string $language;
+
+    public function mount()
+    {
+        $this->language = session('locale', config('app.locale'));
+    }
+
+    public function updatedLanguage($value)
+    {
+        session(['locale' => $value]);
+        app()->setLocale($value);
+        $this->redirect(route('profile.edit', ['tab' => 'appearance']), navigate: true);
+    }
 }; ?>
 
 <section class="w-full">
@@ -12,10 +24,23 @@ new class extends Component {
     <flux:heading class="sr-only">{{ __('Appearance Settings') }}</flux:heading>
 
     <x-pages::settings.layout :heading="__('Appearance')" :subheading="__('Update the appearance settings for your account')">
-        <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
-            <flux:radio value="light" icon="sun">{{ __('Light') }}</flux:radio>
-            <flux:radio value="dark" icon="moon">{{ __('Dark') }}</flux:radio>
-            <flux:radio value="system" icon="computer-desktop">{{ __('System') }}</flux:radio>
-        </flux:radio.group>
+        <div class="space-y-6">
+            <flux:field>
+                <flux:label>{{ __('Theme') }}</flux:label>
+                <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
+                    <flux:radio value="light" icon="sun">{{ __('Light') }}</flux:radio>
+                    <flux:radio value="dark" icon="moon">{{ __('Dark') }}</flux:radio>
+                    <flux:radio value="system" icon="computer-desktop">{{ __('System') }}</flux:radio>
+                </flux:radio.group>
+            </flux:field>
+
+            <flux:field>
+                <flux:label>{{ __('Language') }}</flux:label>
+                <flux:select wire:model.live="language">
+                    <flux:select.option value="en">{{ __('English') }}</flux:select.option>
+                    <flux:select.option value="th">{{ __('Thai') }}</flux:select.option>
+                </flux:select>
+            </flux:field>
+        </div>
     </x-pages::settings.layout>
 </section>
