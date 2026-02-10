@@ -34,6 +34,10 @@
                     :current="request()->routeIs('admin.tape-chart')" wire:navigate>
                     {{ __('Tape Chart') }}
                 </flux:sidebar.item>
+                <flux:sidebar.item icon="currency-dollar" :href="route('admin.pricing')"
+                    :current="request()->routeIs('admin.pricing')" wire:navigate>
+                    {{ __('Pricing') }}
+                </flux:sidebar.item>
                 <flux:sidebar.item icon="building-office-2" :href="route('home')" wire:navigate>
                     {{ __('Public Booking') }}
                 </flux:sidebar.item>

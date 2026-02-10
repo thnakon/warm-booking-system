@@ -6,7 +6,11 @@ use App\Services\BookingService;
 use Carbon\Carbon;
 use Livewire\Attributes\Url;
 
+use Livewire\WithFileUploads;
+
 new class extends Component {
+    use WithFileUploads;
+
     #[Url]
     public $roomTypeId;
     #[Url]
@@ -17,6 +21,9 @@ new class extends Component {
     public $name;
     public $email;
     public $phone;
+    public $slip;
+    public $extraGuests = 0;
+    public $paymentMethod = 'pay_at_hotel';
 
     public $roomType;
     public $nights;
@@ -40,14 +47,24 @@ new class extends Component {
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
+            'slip' => 'nullable|image|max:10240', // 10MB
+            'extraGuests' => 'nullable|integer|min:0',
         ]);
 
         try {
+            $slipPath = null;
+            if ($this->slip) {
+                // Store in 'public' disk -> storage/app/public/payment_slips
+                $slipPath = $this->slip->store('payment_slips', 'public');
+            }
+
             $booking = $service->createBooking(
                 [
                     'name' => $this->name,
                     'email' => $this->email,
                     'phone' => $this->phone,
+                    'slip_path' => $slipPath,
+                    'extra_guests' => $this->extraGuests,
                 ],
                 $this->roomTypeId,
                 $this->checkIn,
@@ -98,6 +115,21 @@ new class extends Component {
                     </div>
 
                     <flux:input label="Phone Number" wire:model="phone" placeholder="08X-XXX-XXXX" />
+
+                    <flux:separator />
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <flux:input label="Extra Guests" type="number" wire:model="extraGuests" min="0" />
+                    </div>
+
+                    <flux:radio.group label="Payment Method" wire:model.live="paymentMethod">
+                        <flux:radio value="pay_at_hotel" label="Pay at Hotel" />
+                        <flux:radio value="bank_transfer" label="Bank Transfer (Upload Slip)" />
+                    </flux:radio.group>
+
+                    @if ($paymentMethod === 'bank_transfer')
+                        <flux:input label="Payment Slip" type="file" wire:model="slip" />
+                    @endif
 
                     <div class="pt-4 border-t border-zinc-100 dark:border-zinc-800">
                         <flux:button variant="primary" wire:click="confirmBooking"

@@ -14,6 +14,7 @@ class Availability extends Model
     protected $fillable = [
         'room_type_id',
         'date',
+        'price',
         'total_inventory',
         'booked_count',
         'blocked_count',
@@ -21,6 +22,7 @@ class Availability extends Model
 
     protected $casts = [
         'date' => 'date',
+        'price' => 'decimal:2',
         'total_inventory' => 'integer',
         'booked_count' => 'integer',
         'blocked_count' => 'integer',

@@ -49,7 +49,17 @@ class BookingService
 
         foreach ($roomTypes as $roomType) {
             if ($this->checkAvailability($roomType->id, $startDate, $endDate)) {
-                $totalPrice = $roomType->base_price * $nights; // Simplified for Phase 1
+                $totalPrice = 0;
+                $period = CarbonPeriod::create($startDate, Carbon::parse($endDate)->subDay());
+
+                foreach ($period as $date) {
+                    $availability = Availability::where('room_type_id', $roomType->id)
+                        ->whereDate('date', $date->format('Y-m-d'))
+                        ->first();
+
+                    $totalPrice += $availability?->price ?? $roomType->base_price;
+                }
+
                 $roomType->total_price = $totalPrice;
                 $availableRoomTypes->push($roomType);
             }
@@ -65,7 +75,7 @@ class BookingService
      */
     public function createBooking(array $customerData, int $roomTypeId, string $startDate, string $endDate): Booking
     {
-        return DB::transaction(function () use ($customerData, $roomTypeId, $startDate, $endDate) {
+        $booking = DB::transaction(function () use ($customerData, $roomTypeId, $startDate, $endDate) {
             $period = CarbonPeriod::create($startDate, Carbon::parse($endDate)->subDay());
             $nights = count($period);
 
@@ -88,10 +98,21 @@ class BookingService
                 $availabilities[] = $availability;
             }
 
-            // 2. Create the booking header
+            // 2. Calculate total price and prepare items
             $roomType = RoomType::find($roomTypeId);
-            $totalPrice = $roomType->base_price * $nights;
+            $totalPrice = 0;
+            $itemsData = [];
 
+            foreach ($availabilities as $availability) {
+                $dailyPrice = $availability->price ?? $roomType->base_price;
+                $totalPrice += $dailyPrice;
+                $itemsData[] = [
+                    'availability' => $availability,
+                    'price' => $dailyPrice,
+                ];
+            }
+
+            // 3. Create the booking header
             $booking = Booking::create([
                 'user_id' => auth()->id(),
                 'total_price' => $totalPrice,
@@ -99,21 +120,39 @@ class BookingService
                 'customer_name' => $customerData['name'],
                 'customer_email' => $customerData['email'],
                 'customer_phone' => $customerData['phone'],
+                'slip_path' => $customerData['slip_path'] ?? null,
+                'extra_guests' => $customerData['extra_guests'] ?? 0,
             ]);
 
-            // 3. Create booking items and update availability
-            foreach ($availabilities as $availability) {
+            // 4. Create booking items and update availability
+            foreach ($itemsData as $item) {
                 BookingItem::create([
                     'booking_id' => $booking->id,
                     'room_type_id' => $roomTypeId,
-                    'date' => $availability->date,
-                    'price' => $roomType->base_price,
+                    'date' => $item['availability']->date,
+                    'price' => $item['price'],
                 ]);
 
-                $availability->increment('booked_count');
+                $item['availability']->increment('booked_count');
             }
 
             return $booking;
         });
+
+        // Send LINE Notification
+        try {
+            $lineService = app(\App\Services\LineNotifyService::class);
+            $message = "New Booking!\n" .
+                "Ref: #{$booking->id}\n" .
+                "Guest: {$booking->customer_name}\n" .
+                "Total: " . number_format($booking->total_price) . " THB";
+
+            $lineService->send($message);
+        } catch (\Exception $e) {
+            // Log error but don't fail booking
+            \Illuminate\Support\Facades\Log::error("Failed to send LINE notification: " . $e->getMessage());
+        }
+
+        return $booking;
     }
 }

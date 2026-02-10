@@ -57,11 +57,11 @@ new class extends Component {
                 <h1 class="text-3xl font-black text-zinc-900 dark:text-white">Reservation #{{ $booking->id }}</h1>
                 <flux:badge
                     :color="match($booking->status) {
-                                                            'CONFIRMED' => 'green',
-                                                            'CANCELLED' => 'red',
-                                                            'HOLD' => 'zinc',
-                                                            default => 'zinc'
-                                                        }">
+                                                                                'CONFIRMED' => 'green',
+                                                                                'CANCELLED' => 'red',
+                                                                                'HOLD' => 'zinc',
+                                                                                default => 'zinc'
+                                                                            }">
                     {{ $booking->status }}</flux:badge>
             </div>
             <p class="text-zinc-500 mt-1 italic">Created on {{ $booking->created_at->format('d M Y, H:i') }}</p>
@@ -102,6 +102,10 @@ new class extends Component {
                         <label class="text-xs text-zinc-500 block">Phone</label>
                         <div class="font-medium text-zinc-700 dark:text-zinc-300">{{ $booking->customer_phone }}</div>
                     </div>
+                    <div>
+                        <label class="text-xs text-zinc-500 block">Extra Guests</label>
+                        <div class="font-medium text-zinc-700 dark:text-zinc-300">{{ $booking->extra_guests }}</div>
+                    </div>
                 </div>
             </flux:card>
 
@@ -117,6 +121,16 @@ new class extends Component {
                         <span class="text-2xl font-black">฿{{ number_format($booking->total_price) }}</span>
                     </div>
                 </div>
+
+                @if ($booking->slip_path)
+                    <div class="mt-6 pt-6 border-t border-zinc-800 dark:border-zinc-200">
+                        <h4 class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3">Payment Slip</h4>
+                        <a href="{{ Storage::url($booking->slip_path) }}" target="_blank">
+                            <img src="{{ Storage::url($booking->slip_path) }}" alt="Payment Slip"
+                                class="w-full rounded-lg border border-zinc-700 hover:opacity-90 transition-opacity">
+                        </a>
+                    </div>
+                @endif
             </flux:card>
         </div>
 

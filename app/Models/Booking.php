@@ -19,10 +19,13 @@ class Booking extends Model
         'customer_name',
         'customer_email',
         'customer_phone',
+        'slip_path',
+        'extra_guests',
     ];
 
     protected $casts = [
         'total_price' => 'decimal:2',
+        'extra_guests' => 'integer',
     ];
 
     public function user(): BelongsTo
