@@ -32,4 +32,14 @@ class RoomType extends Model
     {
         return $this->hasMany(RatePlan::class);
     }
+
+    public function availabilities(): HasMany
+    {
+        return $this->hasMany(Availability::class);
+    }
+
+    public function bookingItems(): HasMany
+    {
+        return $this->hasMany(BookingItem::class);
+    }
 }
