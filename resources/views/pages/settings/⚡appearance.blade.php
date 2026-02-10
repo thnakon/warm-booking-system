@@ -36,10 +36,11 @@ new class extends Component {
 
             <flux:field>
                 <flux:label>{{ __('Language') }}</flux:label>
-                <flux:select wire:model.live="language">
-                    <flux:select.option value="en">{{ __('English') }}</flux:select.option>
-                    <flux:select.option value="th">{{ __('Thai') }}</flux:select.option>
-                </flux:select>
+
+                <flux:radio.group wire:model.live="language" variant="segmented">
+                    <flux:radio value="en">{{ __('English') }}</flux:radio>
+                    <flux:radio value="th">{{ __('Thai') }}</flux:radio>
+                </flux:radio.group>
             </flux:field>
         </div>
     </x-pages::settings.layout>
