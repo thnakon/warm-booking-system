@@ -14,7 +14,7 @@ new class extends Component {
     {
         session(['locale' => $value]);
         app()->setLocale($value);
-        $this->redirect(route('profile.edit', ['tab' => 'appearance']), navigate: true);
+        $this->redirect(route('profile.edit'), navigate: true);
     }
 }; ?>
 
