@@ -75,7 +75,13 @@ new class extends Component {
                                 <span class="text-sm text-zinc-500 ml-1">total for stay</span>
                             </div>
 
-                            <flux:button variant="filled" class="font-semibold">
+                            <flux:button variant="filled" class="font-semibold"
+                                href="{{ route('booking.checkout', [
+                                    'roomTypeId' => $roomType->id,
+                                    'checkIn' => $this->checkIn,
+                                    'checkOut' => $this->checkOut,
+                                ]) }}"
+                                wire:navigate>
                                 Select Room
                             </flux:button>
                         </div>

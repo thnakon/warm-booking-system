@@ -9,6 +9,7 @@ Route::get('/', function () {
 })->name('home');
 
 Volt::route('/search', 'booking.search')->name('booking.search');
+Volt::route('/checkout', 'booking.checkout')->name('booking.checkout');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
