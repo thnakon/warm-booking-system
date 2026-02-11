@@ -17,7 +17,7 @@
 <body class="min-h-screen bg-zinc-50 dark:bg-zinc-950 font-sans antialiased text-zinc-900 dark:text-zinc-100">
     <flux:header
         class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md sticky top-0 z-50 border-b border-zinc-100 dark:border-zinc-800">
-        <flux:navbar container class="flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between w-full">
             <a href="{{ route('home') }}" class="flex items-center gap-2 group" wire:navigate>
                 <div
                     class="size-9 bg-zinc-900 dark:bg-zinc-100 flex items-center justify-center rounded-lg group-hover:scale-105 transition-transform">
@@ -27,26 +27,30 @@
                         class="text-zinc-500">RESORT</span></span>
             </a>
 
-            <flux:navbar class="gap-8 max-md:hidden">
-                <flux:navbar.item :href="route('home')" :current="request()->routeIs('home')" wire:navigate>Home
-                </flux:navbar.item>
-                <flux:navbar.item :href="route('booking.search')" :current="request()->routeIs('booking.search')"
-                    wire:navigate>Rooms</flux:navbar.item>
-                <flux:navbar.item href="#">Gallery</flux:navbar.item>
-                <flux:navbar.item href="#">About</flux:navbar.item>
-            </flux:navbar>
+            <div class="flex items-center gap-10">
+                <flux:navbar class="gap-8 max-md:hidden">
+                    <flux:navbar.item :href="route('home')" :current="request()->routeIs('home')" wire:navigate>Home
+                    </flux:navbar.item>
+                    <flux:navbar.item :href="route('booking.search')" :current="request()->routeIs('booking.search')"
+                        wire:navigate>Rooms</flux:navbar.item>
+                    <flux:navbar.item href="#">Gallery</flux:navbar.item>
+                    <flux:navbar.item href="#">About</flux:navbar.item>
+                </flux:navbar>
 
-            <div class="flex items-center gap-4">
-                @auth
-                    <flux:button variant="ghost" :href="route('dashboard')" wire:navigate>Merchant Admin</flux:button>
-                @else
-                    <flux:button variant="ghost" :href="route('login')" wire:navigate>Merchant Log in</flux:button>
-                @endauth
-                <flux:button variant="primary" :href="route('booking.search')" wire:navigate class="max-sm:hidden">Book
-                    Now</flux:button>
-                <flux:sidebar.toggle class="md:hidden" icon="bars-2" />
+                <div class="flex items-center gap-4 border-l border-zinc-100 dark:border-zinc-800 pl-8">
+                    @auth
+                        <flux:button variant="ghost" :href="route('dashboard')" wire:navigate>Merchant Admin</flux:button>
+                    @else
+                        <flux:button variant="ghost" :href="route('login')" wire:navigate
+                            class="text-zinc-500 hover:text-zinc-900 dark:hover:text-white">Merchant Log in</flux:button>
+                    @endauth
+                    <flux:button variant="primary" :href="route('booking.search')" wire:navigate
+                        class="max-sm:hidden tracking-widest uppercase text-[10px] font-bold px-6">Book
+                        Now</flux:button>
+                    <flux:sidebar.toggle class="md:hidden" icon="bars-2" />
+                </div>
             </div>
-        </flux:navbar>
+        </div>
     </flux:header>
 
     <main>
