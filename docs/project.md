@@ -170,53 +170,15 @@
 
 ---
 
-## 9. Roadmap
+### Phase 4: Payment, Audit & Reports (Completed)
 
-### Phase 1: Core (MVP สำหรับรีสอร์ท 8 ห้อง)
+* **Advanced Pricing**: Date-specific pricing (Weekend/Holiday) using `availabilities` table.
+* **Payment Slip**: File upload for "Bank Transfer" payments.
+* **Audit Logs**: Forensic trail tracking all critical booking and room changes.
+* **Financial Analytics**: Dashboard metrics for Revenue (MTD), Occupancy Rate, and 7-day revenue forecast.
+* **LINE Notify**: Staff alerts for new incoming bookings.
 
-* Auth + Roles
-* RoomType (เล็ก/กลาง/ใหญ่) + Rooms (8 ห้อง)
-* RatePlan (Standard / Member)
-* Availability ต่อวัน (คุมสต็อกตาม RoomType)
-* Booking Engine (Transaction + Lock)
-* Manual Booking (Staff รับโทร/LINE/Walk-in)
-* Public Booking Page (ค้นหาวัน + แสดงห้องว่าง + จอง)
-
-### Phase 2: Back Office
-
-* Dashboard
-
-* Booking Management
-
-* Calendar View
-
-* Customer Profiles
-
-* Audit Logs
-
-* Dashboard
-
-* Booking Management
-
-* Calendar View
-
-* Customer Profiles
-
-* Audit Logs
-
-### Phase 3: Member
-
-* Register / Login
-* Booking History
-* Member Discount
-* Points System (Basic)
-
-### Phase 4: Payment & Notification
-
-* Upload Slip
-* Payment Status
-* Email/LINE Notify
-* Reports (Daily/Monthly)
+### Phase 5: Member & Integration (Next)
 
 ### Phase 5: Integration (Optional)
 

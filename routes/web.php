@@ -12,8 +12,10 @@ Volt::route('/search', 'booking.search')->name('booking.search');
 Volt::route('/checkout', 'booking.checkout')->name('booking.checkout');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('dashboard', 'dashboard')->name('dashboard');
-    Volt::route('admin/dashboard', 'admin.dashboard')->name('admin.dashboard');
+    Route::get('dashboard', function () {
+        return redirect()->route('dashboard');
+    });
+    Volt::route('admin/dashboard', 'admin.dashboard')->name('dashboard');
     Volt::route('admin/bookings', 'admin.bookings.index')->name('admin.bookings.index');
     Volt::route('admin/bookings/create', 'admin.bookings.create')->name('admin.bookings.create');
     Volt::route('admin/bookings/{booking}', 'admin.bookings.show')->name('admin.bookings.show');

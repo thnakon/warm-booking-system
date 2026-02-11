@@ -114,118 +114,115 @@ new class extends Component {
     </div>
 
     <!-- Operations Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Arrivals -->
+        <flux:card class="p-0 overflow-hidden">
+            <div
+                class="p-6 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-800/30">
+                <h2 class="font-bold flex items-center gap-2">
+                    <flux:icon.arrow-down-left class="w-5 h-5 text-blue-500" />
+                    Today's Arrivals
+                </h2>
+                <flux:badge color="blue" inset="top">{{ $arrivals->count() }}</flux:badge>
+            </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Arrivals -->
-            <flux:card class="p-0 overflow-hidden">
-                <div
-                    class="p-6 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-800/30">
-                    <h2 class="font-bold flex items-center gap-2">
-                        <flux:icon.arrow-down-left class="w-5 h-5 text-blue-500" />
-                        Today's Arrivals
-                    </h2>
-                    <flux:badge color="blue" inset="top">{{ $arrivals->count() }}</flux:badge>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left">
-                        <thead>
-                            <tr
-                                class="text-xs font-bold text-zinc-400 uppercase tracking-widest border-b border-zinc-100 dark:border-zinc-800">
-                                <th class="px-6 py-4">Guest</th>
-                                <th class="px-6 py-4">Room Type</th>
-                                <th class="px-6 py-4">Status</th>
-                                <th class="px-6 py-4"></th>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr
+                            class="text-xs font-bold text-zinc-400 uppercase tracking-widest border-b border-zinc-100 dark:border-zinc-800">
+                            <th class="px-6 py-4">Guest</th>
+                            <th class="px-6 py-4">Room Type</th>
+                            <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
+                        @forelse ($arrivals as $booking)
+                            <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div class="font-bold text-zinc-900 dark:text-white">
+                                        {{ $booking->customer_name }}
+                                    </div>
+                                    <div class="text-xs text-zinc-500">#{{ $booking->id }}</div>
+                                </td>
+                                <td class="px-6 py-4 text-sm">
+                                    {{ $booking->items->first()->roomType->name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <flux:badge size="sm"
+                                        :color="$booking->status === 'CONFIRMED' ? 'green' : 'zinc'">
+                                        {{ $booking->status }}
+                                    </flux:badge>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <flux:button variant="ghost" size="sm">Manage</flux:button>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
-                            @forelse ($arrivals as $booking)
-                                <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <div class="font-bold text-zinc-900 dark:text-white">
-                                            {{ $booking->customer_name }}
-                                        </div>
-                                        <div class="text-xs text-zinc-500">#{{ $booking->id }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm">
-                                        {{ $booking->items->first()->roomType->name }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <flux:badge size="sm"
-                                            :color="$booking->status === 'CONFIRMED' ? 'green' : 'zinc'">
-                                            {{ $booking->status }}
-                                        </flux:badge>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <flux:button variant="ghost" size="sm">Manage</flux:button>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="px-6 py-12 text-center text-zinc-500">
-                                        No arrivals scheduled for today.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </flux:card>
-
-            <!-- Departures -->
-            <flux:card class="p-0 overflow-hidden">
-                <div
-                    class="p-6 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-800/30">
-                    <h2 class="font-bold flex items-center gap-2">
-                        <flux:icon.arrow-up-right class="w-5 h-5 text-orange-500" />
-                        Today's Departures
-                    </h2>
-                    <flux:badge color="orange" inset="top">{{ $departures->count() }}</flux:badge>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left">
-                        <thead>
-                            <tr
-                                class="text-xs font-bold text-zinc-400 uppercase tracking-widest border-b border-zinc-100 dark:border-zinc-800">
-                                <th class="px-6 py-4">Guest</th>
-                                <th class="px-6 py-4">Room Type</th>
-                                <th class="px-6 py-4">Status</th>
-                                <th class="px-6 py-4"></th>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="px-6 py-12 text-center text-zinc-500">
+                                    No arrivals scheduled for today.
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
-                            @forelse ($departures as $booking)
-                                <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <div class="font-bold text-zinc-900 dark:text-white">
-                                            {{ $booking->customer_name }}
-                                        </div>
-                                        <div class="text-xs text-zinc-500">#{{ $booking->id }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm">
-                                        {{ $booking->items->first()->roomType->name }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <flux:badge size="sm" color="zinc">
-                                            {{ $booking->status }}
-                                        </flux:badge>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <flux:button variant="ghost" size="sm">Manage</flux:button>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="px-6 py-12 text-center text-zinc-500">
-                                        No departures scheduled for today.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </flux:card>
-        </div>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </flux:card>
+
+        <!-- Departures -->
+        <flux:card class="p-0 overflow-hidden">
+            <div
+                class="p-6 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-800/30">
+                <h2 class="font-bold flex items-center gap-2">
+                    <flux:icon.arrow-up-right class="w-5 h-5 text-orange-500" />
+                    Today's Departures
+                </h2>
+                <flux:badge color="orange" inset="top">{{ $departures->count() }}</flux:badge>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr
+                            class="text-xs font-bold text-zinc-400 uppercase tracking-widest border-b border-zinc-100 dark:border-zinc-800">
+                            <th class="px-6 py-4">Guest</th>
+                            <th class="px-6 py-4">Room Type</th>
+                            <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
+                        @forelse ($departures as $booking)
+                            <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div class="font-bold text-zinc-900 dark:text-white">
+                                        {{ $booking->customer_name }}
+                                    </div>
+                                    <div class="text-xs text-zinc-500">#{{ $booking->id }}</div>
+                                </td>
+                                <td class="px-6 py-4 text-sm">
+                                    {{ $booking->items->first()->roomType->name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <flux:badge size="sm" color="zinc">
+                                        {{ $booking->status }}
+                                    </flux:badge>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <flux:button variant="ghost" size="sm">Manage</flux:button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="px-6 py-12 text-center text-zinc-500">
+                                    No departures scheduled for today.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </flux:card>
     </div>

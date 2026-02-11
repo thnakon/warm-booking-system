@@ -62,7 +62,7 @@ new class extends Component {
 
 <div class="max-w-4xl mx-auto py-10 px-4 space-y-8">
     <flux:breadcrumbs class="mb-6">
-        <flux:breadcrumbs.item :href="route('admin.dashboard')">Admin</flux:breadcrumbs.item>
+        <flux:breadcrumbs.item :href="route('dashboard')">Admin</flux:breadcrumbs.item>
         <flux:breadcrumbs.item :href="route('admin.bookings.index')">Bookings</flux:breadcrumbs.item>
         <flux:breadcrumbs.item>New Reservation</flux:breadcrumbs.item>
     </flux:breadcrumbs>

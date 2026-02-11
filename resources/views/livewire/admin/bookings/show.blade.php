@@ -66,7 +66,7 @@ new class extends Component {
 
 <div class="max-w-5xl mx-auto py-10 px-4 space-y-8">
     <flux:breadcrumbs class="mb-6">
-        <flux:breadcrumbs.item :href="route('admin.dashboard')">Admin</flux:breadcrumbs.item>
+        <flux:breadcrumbs.item :href="route('dashboard')">Admin</flux:breadcrumbs.item>
         <flux:breadcrumbs.item :href="route('admin.bookings.index')">Bookings</flux:breadcrumbs.item>
         <flux:breadcrumbs.item>#{{ $booking->id }}</flux:breadcrumbs.item>
     </flux:breadcrumbs>
@@ -77,11 +77,11 @@ new class extends Component {
                 <h1 class="text-3xl font-black text-zinc-900 dark:text-white">Reservation #{{ $booking->id }}</h1>
                 <flux:badge
                     :color="match($booking->status) {
-                                                                                                                        'CONFIRMED' => 'green',
-                                                                                                                        'CANCELLED' => 'red',
-                                                                                                                        'HOLD' => 'zinc',
-                                                                                                                        default => 'zinc'
-                                                                                                                    }">
+                                                                                                                                                                'CONFIRMED' => 'green',
+                                                                                                                                                                'CANCELLED' => 'red',
+                                                                                                                                                                'HOLD' => 'zinc',
+                                                                                                                                                                default => 'zinc'
+                                                                                                                                                            }">
                     {{ $booking->status }}</flux:badge>
             </div>
             <p class="text-zinc-500 mt-1 italic">Created on {{ $booking->created_at->format('d M Y, H:i') }}</p>
@@ -158,11 +158,11 @@ new class extends Component {
                         <span class="text-zinc-400">Status</span>
                         <flux:badge size="sm"
                             :color="match($booking->payment_status) {
-                                                                                    'paid' => 'green',
-                                                                                    'pending' => 'yellow',
-                                                                                    'failed' => 'red',
-                                                                                    default => 'zinc'
-                                                                                }">
+                                                                                                                                            'paid' => 'green',
+                                                                                                                                            'pending' => 'yellow',
+                                                                                                                                            'failed' => 'red',
+                                                                                                                                            default => 'zinc'
+                                                                                                                                        }">
                             {{ strtoupper($booking->payment_status) }}</flux:badge>
                     </div>
                     <flux:separator class="border-zinc-800 dark:border-zinc-200" />
