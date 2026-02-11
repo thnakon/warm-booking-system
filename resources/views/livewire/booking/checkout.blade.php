@@ -63,6 +63,7 @@ new class extends Component {
                     'name' => $this->name,
                     'email' => $this->email,
                     'phone' => $this->phone,
+                    'payment_method' => $this->paymentMethod,
                     'slip_path' => $slipPath,
                     'extra_guests' => $this->extraGuests,
                 ],

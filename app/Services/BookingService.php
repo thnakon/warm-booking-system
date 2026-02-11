@@ -120,6 +120,7 @@ class BookingService
                 'customer_name' => $customerData['name'],
                 'customer_email' => $customerData['email'],
                 'customer_phone' => $customerData['phone'],
+                'payment_method' => $customerData['payment_method'] ?? null,
                 'slip_path' => $customerData['slip_path'] ?? null,
                 'extra_guests' => $customerData['extra_guests'] ?? 0,
             ]);
@@ -135,6 +136,8 @@ class BookingService
 
                 $item['availability']->increment('booked_count');
             }
+
+            \App\Services\AuditLogger::log('BOOKING_CREATED', $booking, null, $booking->toArray());
 
             return $booking;
         });

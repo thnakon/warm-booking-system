@@ -9,22 +9,39 @@ use App\Models\RoomType;
 new class extends Component {
     public Booking $booking;
     public $status;
+    public $payment_status;
 
     public function mount(Booking $booking)
     {
         $this->booking = $booking->load(['items.roomType', 'items.room']);
         $this->status = $booking->status;
+        $this->payment_status = $booking->payment_status;
     }
 
     public function updateStatus()
     {
+        $oldStatus = $this->booking->status;
         $this->booking->update(['status' => $this->status]);
+
+        \App\Services\AuditLogger::log('STATUS_UPDATED', $this->booking, ['status' => $oldStatus], ['status' => $this->status]);
+
         session()->flash('success', 'Booking status updated successfully.');
+    }
+
+    public function updatePaymentStatus()
+    {
+        $oldStatus = $this->booking->payment_status;
+        $this->booking->update(['payment_status' => $this->payment_status]);
+
+        \App\Services\AuditLogger::log('PAYMENT_STATUS_UPDATED', $this->booking, ['payment_status' => $oldStatus], ['payment_status' => $this->payment_status]);
+
+        session()->flash('success', 'Payment status updated successfully.');
     }
 
     public function assignRoom($itemId, $roomId)
     {
         $item = BookingItem::findOrFail($itemId);
+        $oldRoomId = $item->room_id;
 
         // Basic check: if room belongs to the correct type
         $room = Room::findOrFail($roomId);
@@ -34,6 +51,9 @@ new class extends Component {
         }
 
         $item->update(['room_id' => $roomId]);
+
+        \App\Services\AuditLogger::log('ROOM_ASSIGNED', $this->booking, ['item_id' => $item->id, 'room_id' => $oldRoomId], ['item_id' => $item->id, 'room_id' => $roomId]);
+
         $this->booking->load('items.room'); // Refresh
         session()->flash('success', 'Room #' . $room->room_number . ' assigned to item.');
     }
@@ -57,11 +77,11 @@ new class extends Component {
                 <h1 class="text-3xl font-black text-zinc-900 dark:text-white">Reservation #{{ $booking->id }}</h1>
                 <flux:badge
                     :color="match($booking->status) {
-                                                                                'CONFIRMED' => 'green',
-                                                                                'CANCELLED' => 'red',
-                                                                                'HOLD' => 'zinc',
-                                                                                default => 'zinc'
-                                                                            }">
+                                                                                                                        'CONFIRMED' => 'green',
+                                                                                                                        'CANCELLED' => 'red',
+                                                                                                                        'HOLD' => 'zinc',
+                                                                                                                        default => 'zinc'
+                                                                                                                    }">
                     {{ $booking->status }}</flux:badge>
             </div>
             <p class="text-zinc-500 mt-1 italic">Created on {{ $booking->created_at->format('d M Y, H:i') }}</p>
@@ -107,11 +127,45 @@ new class extends Component {
                         <div class="font-medium text-zinc-700 dark:text-zinc-300">{{ $booking->extra_guests }}</div>
                     </div>
                 </div>
+
+                <flux:separator class="my-6" />
+
+                <h3 class="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-4">Payment Management</h3>
+                <div class="space-y-4">
+                    <flux:field>
+                        <flux:label>Payment Status</flux:label>
+                        <flux:select wire:model="payment_status" dense>
+                            <flux:select.option value="pending">Pending</flux:select.option>
+                            <flux:select.option value="paid">Paid</flux:select.option>
+                            <flux:select.option value="failed">Failed</flux:select.option>
+                            <flux:select.option value="refunded">Refunded</flux:select.option>
+                        </flux:select>
+                    </flux:field>
+                    <flux:button variant="primary" wire:click="updatePaymentStatus" class="w-full">Update Payment
+                    </flux:button>
+                </div>
             </flux:card>
 
             <flux:card class="p-6 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900">
                 <h3 class="text-sm font-bold text-zinc-500 uppercase tracking-widest mb-4">Payment Summary</h3>
-                <div class="space-y-2">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-zinc-400">Method</span>
+                        <flux:badge size="sm" variant="outline">
+                            {{ strtoupper(str_replace('_', ' ', $booking->payment_method ?? 'N/A')) }}</flux:badge>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-zinc-400">Status</span>
+                        <flux:badge size="sm"
+                            :color="match($booking->payment_status) {
+                                                                                    'paid' => 'green',
+                                                                                    'pending' => 'yellow',
+                                                                                    'failed' => 'red',
+                                                                                    default => 'zinc'
+                                                                                }">
+                            {{ strtoupper($booking->payment_status) }}</flux:badge>
+                    </div>
+                    <flux:separator class="border-zinc-800 dark:border-zinc-200" />
                     <div class="flex justify-between">
                         <span class="text-zinc-400">Accommodation</span>
                         <span class="font-bold">฿{{ number_format($booking->total_price) }}</span>

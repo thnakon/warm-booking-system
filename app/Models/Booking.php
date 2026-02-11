@@ -16,6 +16,8 @@ class Booking extends Model
         'user_id',
         'total_price',
         'status',
+        'payment_status',
+        'payment_method',
         'customer_name',
         'customer_email',
         'customer_phone',
