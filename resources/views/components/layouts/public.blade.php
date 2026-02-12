@@ -18,13 +18,19 @@
     <flux:header
         class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md sticky top-0 z-50 border-b border-zinc-100 dark:border-zinc-800">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between w-full">
-            <a href="{{ route('home') }}" class="flex items-center gap-2 group" wire:navigate>
-                <div
-                    class="size-9 bg-zinc-900 dark:bg-zinc-100 flex items-center justify-center rounded-lg group-hover:scale-105 transition-transform">
-                    <flux:icon.sun class="size-6 text-white dark:text-zinc-900" />
-                </div>
-                <span class="text-xl font-bold tracking-tight font-serif">WARM <span
-                        class="text-zinc-500">RESORT</span></span>
+            <a href="{{ route('home') }}" class="flex items-center gap-3 group" wire:navigate>
+                @if (hotel('hotel_logo'))
+                    <img src="{{ hotel('hotel_logo') }}"
+                        class="size-9 object-contain group-hover:scale-105 transition-transform">
+                @else
+                    <div
+                        class="size-9 bg-zinc-900 dark:bg-zinc-100 flex items-center justify-center rounded-lg group-hover:scale-105 transition-transform">
+                        <flux:icon.sun class="size-6 text-white dark:text-zinc-900" />
+                    </div>
+                @endif
+                <span class="text-xl font-bold tracking-tight font-serif uppercase">
+                    {{ hotel('hotel_name', 'WARM RESORT') }}
+                </span>
             </a>
 
             <div class="flex items-center gap-10">
@@ -60,11 +66,16 @@
     <footer class="bg-zinc-900 text-zinc-400 py-16 mt-20">
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
             <div class="col-span-1 md:col-span-2">
-                <div class="flex items-center gap-2 mb-6">
-                    <div class="size-8 bg-white flex items-center justify-center rounded-lg">
-                        <flux:icon.sun class="size-5 text-zinc-900" />
-                    </div>
-                    <span class="text-white text-xl font-bold tracking-tight font-serif">WARM RESORT</span>
+                <div class="flex items-center gap-3 mb-6">
+                    @if (hotel('hotel_logo'))
+                        <img src="{{ hotel('hotel_logo') }}" class="size-8 object-contain">
+                    @else
+                        <div class="size-8 bg-white flex items-center justify-center rounded-lg">
+                            <flux:icon.sun class="size-5 text-zinc-900" />
+                        </div>
+                    @endif
+                    <span
+                        class="text-white text-xl font-bold tracking-tight font-serif uppercase">{{ hotel('hotel_name', 'WARM RESORT') }}</span>
                 </div>
                 <p class="max-w-xs leading-relaxed">
                     A boutique sanctuary in the heart of Thailand, where modern luxury meets tropical tranquility.
@@ -85,17 +96,17 @@
                 <ul class="space-y-4 text-sm">
                     <li class="flex items-start gap-3">
                         <flux:icon.map-pin class="size-5 shrink-0" />
-                        <span>123 Tropical Beach Rd, Koh Samui, Thailand</span>
+                        <span>{{ hotel('hotel_address', '123 Tropical Beach Rd, Koh Samui, Thailand') }}</span>
                     </li>
                     <li class="flex items-center gap-3">
                         <flux:icon.phone class="size-5 shrink-0" />
-                        <span>+66 81 234 5678</span>
+                        <span>{{ hotel('hotel_phone', '+66 81 234 5678') }}</span>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-zinc-800 text-sm text-center">
-            &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+            &copy; {{ date('Y') }} {{ hotel('hotel_name', config('app.name')) }}. All rights reserved.
         </div>
     </footer>
 

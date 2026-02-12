@@ -31,7 +31,11 @@
                     :current="request()->routeIs('admin.pricing')" wire:navigate>
                     {{ __('Pricing') }}
                 </flux:sidebar.item>
-                <flux:sidebar.item icon="building-office-2" :href="route('home')" wire:navigate>
+                <flux:sidebar.item icon="building-office-2" :href="route('admin.hotel-settings')"
+                    :current="request()->routeIs('admin.hotel-settings')" wire:navigate>
+                    {{ __('Hotel Settings') }}
+                </flux:sidebar.item>
+                <flux:sidebar.item icon="globe-alt" :href="route('home')" wire:navigate>
                     {{ __('Public Booking') }}
                 </flux:sidebar.item>
             </flux:sidebar.group>

@@ -21,6 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Volt::route('admin/bookings/{booking}', 'admin.bookings.show')->name('admin.bookings.show');
     Volt::route('admin/tape-chart', 'admin.tape-chart')->name('admin.tape-chart');
     Volt::route('admin/pricing', 'admin.pricing')->name('admin.pricing');
+    Volt::route('admin/hotel-settings', 'admin.hotel-settings')->name('admin.hotel-settings');
 });
 
 require __DIR__ . '/settings.php';

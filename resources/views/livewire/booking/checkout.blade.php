@@ -155,10 +155,41 @@ new class extends Component {
 
                     @if ($paymentMethod === 'bank_transfer')
                         <div
-                            class="bg-zinc-50 dark:bg-zinc-800/40 p-6 rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-700">
-                            <p class="text-sm text-zinc-500 mb-4 font-medium">Please upload your transfer slip for
-                                verification:</p>
-                            <flux:input label="Payment Slip" type="file" wire:model="slip" />
+                            class="bg-zinc-50 dark:bg-zinc-800/40 p-8 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-700 space-y-6">
+                            <div>
+                                <h4
+                                    class="text-sm font-bold uppercase tracking-widest text-zinc-900 dark:text-white mb-4">
+                                    Bank Transfer Details</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                                    <div
+                                        class="p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-100 dark:border-zinc-800">
+                                        <div class="text-xs text-zinc-400 uppercase font-black mb-1">Bank Name</div>
+                                        <div class="font-bold border-l-2 border-indigo-500 pl-3">
+                                            {{ hotel('hotel_bank_name', 'SCB') }}</div>
+                                    </div>
+                                    <div
+                                        class="p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-100 dark:border-zinc-800">
+                                        <div class="text-xs text-zinc-400 uppercase font-black mb-1">Account Number
+                                        </div>
+                                        <div class="font-bold border-l-2 border-indigo-500 pl-3">
+                                            {{ hotel('hotel_bank_account_number', '000-0-00000-0') }}</div>
+                                    </div>
+                                    <div
+                                        class="sm:col-span-2 p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-100 dark:border-zinc-800">
+                                        <div class="text-xs text-zinc-400 uppercase font-black mb-1">Account Name</div>
+                                        <div class="font-bold border-l-2 border-indigo-500 pl-3">
+                                            {{ hotel('hotel_bank_account_name', 'WARM RESORT CO., LTD.') }}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-zinc-100 dark:border-zinc-700">
+                                <p class="text-sm text-zinc-500 mb-4 font-medium flex items-center gap-2">
+                                    <flux:icon.arrow-up-tray class="size-4" />
+                                    Please upload your transfer slip for verification:
+                                </p>
+                                <flux:input type="file" wire:model="slip" />
+                            </div>
                         </div>
                     @endif
 
